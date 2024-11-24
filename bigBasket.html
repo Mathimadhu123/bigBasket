@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Problem Statement: Gift Voucher Reward System for Big Basket
+
+    Design a JavaScript program to reward Big Basket customers with gift vouchers based on their accumulated bonus
+    points. The program should:
+
+    1. Calculate gift voucher values based on bonus points (e.g., 100 points = ₹100 gift voucher).
+    2. Display the gift voucher reward to the customer.
+
+    Submission Details:
+    1. Format: GitHub Link
+    2. Snapshot: Code & Output -->
+    
+    <div class="container">
+        <h2>Welcome to Big Basket</h2>
+        <div id="result"></div>
+        <hr>
+        <h2>Redeem Your Voucher</h2>
+        <input type="text" id="voucherCode" placeholder="Enter Voucher Code">
+        <button type="button" onclick="voucherRedeem()">Redeem</button>
+        <div id="messageRedemption"></div>
+    </div>
+    <script>
+
+        // we are getting customer Name & Purchased amount from user
+        let customerName = "KARTHIK";
+        let purchaseAmt = 1500;
+        let bonusPoints = 0;
+        let voucher = null;
+
+
+        //calculating the bonus points based the purchase amount
+        function calculateBonus(purchaseAmt) {
+            let bonusPercentage = 0;
+            if (purchaseAmt >= 100 && purchaseAmt <= 500)
+                bonusPercentage = 0.05;
+            else if (purchaseAmt >= 501 && purchaseAmt <= 1500)
+                bonusPercentage = 0.10;
+            else if (purchaseAmt >= 1501 && purchaseAmt <= 2500)
+                bonusPercentage = 0.15;
+            else if (purchaseAmt >= 2501 && purchaseAmt <= 3500)
+                bonusPercentage = 0.2;
+            return bonusPoints = bonusPercentage * purchaseAmt;
+            console.log(bonusPercentage);
+            
+        }
+        console.log(bonusPoints)
+
+        //for generating voucher unique code
+        function voucherCodeGenerator() {
+            return `VOUCHER - ${Math.random().toString(36).substr(2, 6).toUpperCase()}` //to give 6 random charaters in uppercase
+        }
+        console.log();
+
+        //for displaying the Results
+        function result(purchaseAmt) {
+            let bonus = calculateBonus(purchaseAmt);
+            console.log(bonus);
+            
+            let msg = " ";
+            if (purchaseAmt <= 100) {
+                msg = '<div class="message error">Thank you for visiting us! Please come again.</div>'
+            } else {
+                let vouchercode = voucherCodeGenerator();
+                let voucherVal = bonusPoints;
+                console.log(voucherVal);
+                voucher = {
+                    code: vouchercode,
+                    value: bonusPoints,
+                    redeemed: false
+                };
+                msg = `
+                    <div class="message success">
+                        <p>Dear ${customerName},</p>
+                        <p>You have earned ${bonus} Bonus points</p>
+                        <p>Your voucher code is : ${vouchercode}</p>
+                        <p> Voucher Value : ${voucher.value}</p>
+                        <p> Use this voucher during your next purchase in Big Basket!</p>
+                    </div> `
+
+            }
+            document.getElementById('result').innerHTML = msg;
+        }
+
+        function voucherRedeem(){
+            let input = document.getElementById("voucherCode");
+            let messageRedemption = document.getElementById('messageRedemption');
+            if(!voucher){
+                messageRedemption.innerHTML = `<div class="message error">No voucher available to redeem. Please earn a voucher first.</div>`;
+            } else if (voucherCode === input && !voucher.redeemed){
+                voucher.redeemed = true; // Mark the voucher as redeemed
+                messageRedemption.innerHTML =` <div class="message success">Voucher Redeemed Successfully! Value: ₹${voucher.value}</div>`;
+            } else if (voucher.redeemed) {
+                messageRedemption.innerHTML = `<div class="message error">This voucher has already been redeemed.</div>`;
+            } else {
+                messageRedemption.innerHTML =` <div class="message error">Invalid Voucher Code. Please try again.</div>`;
+            }    
+        }
+
+        
+        result(purchaseAmt)
+
+    </script>
+</body>
+
+</html>
